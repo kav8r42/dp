@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    ===============LONGEST PALINDROMIC SUBSEQUENCE==================
+
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        
+        Scanner sc=new Scanner(System.in);
+        String s=sc.next();
+        
+        char[] a = s.toCharArray();
+        int n = a.length;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 1;
+            int max = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                int next = dp[j];
+                if (a[i] == a[j])    dp[j] = 2 + max;
+                max = Math.max(max, next);
+            }
+        }
+        int max = 0;
+        for (int i : dp)    max = Math.max(i, max);
+        System.out.println(max);
+    }
+}
+
+=============================================LONGEST BIOTONIC SUBSEQUENCE===================================
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class Solution
+{
+    static int lbs( int arr[], int n )
+    {
+        int i, j;
+        /* Allocate memory for LIS[] and initialize LIS values as 1 for
+            all indexes */
+        int[] lis = new int[n];
+        for (i = 0; i < n; i++)
+            lis[i] = 1;
+        /* Compute LIS values from left to right */
+        for (i = 1; i < n; i++)
+            for (j = 0; j < i; j++)
+                if (arr[i] > arr[j] && lis[i] < lis[j] + 1)
+                    lis[i] = lis[j] + 1;
+        /* Allocate memory for lds and initialize LDS values for
+            all indexes */
+        int[] lds = new int [n];
+        for (i = 0; i < n; i++)
+            lds[i] = 1;
+        /* Compute LDS values from right to left */
+        for (i = n-2; i >= 0; i--)
+            for (j = n-1; j > i; j--)
+                if (arr[i] > arr[j] && lds[i] < lds[j] + 1)
+                    lds[i] = lds[j] + 1;
+        /* Return the maximum value of lis[i] + lds[i] - 1*/
+        int max = lis[0] + lds[0] - 1;
+        for (i = 1; i < n; i++)
+            if (lis[i] + lds[i] - 1 > max)
+                max = lis[i] + lds[i] - 1;
+        return max;
+    }
+    public static void main (String[] args)
+    {
+        Scanner sc=new Scanner(System.in);
+        int k=sc.nextInt();
+        for(int j=0;j<k;j++)
+        {int n = sc.nextInt();
+        int arr[] = new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        System.out.println(lbs( arr, n ));}
+    }
+}
+
+=====================================================LONGEST INCREASING SUBSEQUENCE================================
+
+import java.io.*;
+import java.util.*;
+public class Solution {
+    public static int lolis(int[] nums) {
+        if (nums.length == 0) return 0;
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        int maxResult = 1;
+        for (int i = 1; i < nums.length; i++) {
+            int maxVal = 0;
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]){
+                    maxVal = Math.max(maxVal, dp[j]);
+                }
+            }
+            dp[i] = maxVal + 1;
+            maxResult = Math.max(maxResult, dp[i]);
+        }
+        return maxResult;
+    }
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner sc=new Scanner(System.in);
+        int n = sc.nextInt();
+        int arr[] = new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        System.out.println(lolis(arr));
+    }
+}
+
+============================================LONGEST COMMON SUBSEQUENCE===================================
+
+import java.util.*; 
+public class LongestCommonSubsequence { 
+int lcs(String X, String Y, int m, int n) 
+    { 
+        int L[][] = new int[m + 1][n + 1]; 
+        for (int i = 0; i <= m; i++) { 
+            for (int j = 0; j <= n; j++) { 
+                if (i == 0 || j == 0) 
+                    L[i][j] = 0; 
+                else if (X.charAt(i - 1) == Y.charAt(j - 1)) 
+                    L[i][j] = L[i - 1][j - 1] + 1; 
+                else
+                    L[i][j] = max(L[i - 1][j], L[i][j - 1]); 
+            } 
+        } 
+        return L[m][n]; 
+    } 
+
+    // Utility function to get max of 2 integers 
+    int max(int a, int b) { return (a > b) ? a : b; } 
+
+    public static void main(String[] args) 
+    { 
+        LongestCommonSubsequence lcs = new LongestCommonSubsequence(); 
+        Scanner sc=new Scanner(System.in);
+        String S1 =sc.next() ; 
+        String S2 = sc.next(); 
+        int m = S1.length(); 
+        int n = S2.length(); 
+        System.out.println(lcs.lcs(S1, S2, m, n)); 
+    } 
+} 
+
+====================================================Distributing items when a person cannot take more than two items of same type==========
+
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the input as a string
+        String inputLine = scanner.nextLine().trim();
+        scanner.close();
+        
+        // Parse the input line
+        String[] inputParts = inputLine.split("\\s+");
+        List<Integer> sweets = new ArrayList<>();
+        for (int i = 0; i < inputParts.length - 1; i++) {
+            sweets.add(Integer.parseInt(inputParts[i]));
+        }
+        
+        // Last element of the input is the number of customers k
+        int k = Integer.parseInt(inputParts[inputParts.length - 1]);
+        
+        // Calculate frequency of each type of sweet using a HashMap
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int sweet : sweets) {
+            frequencyMap.put(sweet, frequencyMap.getOrDefault(sweet, 0) + 1);
+        }
+        
+        // Calculate how many customers can be satisfied
+        int totalSatisfiedCustomers = 0;
+        for (int count : frequencyMap.values()) {
+            // Each customer can receive up to 2 pieces of each type of sweet
+            totalSatisfiedCustomers += count / 2;
+        }
+        
+        // Compare the total satisfied customers with k
+        if (totalSatisfiedCustomers >= k) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
+    }
+}
+
+==================================HASH MAP TO TREE MAP====================================
+
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the entire input line from stdin
+        String inputLine = scanner.nextLine().trim();
+        
+        // Close the scanner as it is no longer needed
+        scanner.close();
+        
+        // Remove the surrounding curly braces and spaces from the input line
+        inputLine = inputLine.substring(1, inputLine.length() - 1).trim();
+        
+        // Initialize a HashMap to hold the parsed key-value pairs
+        Map<String, Integer> hashMap = new HashMap<>();
+        
+        // Parse the input line to fill the HashMap
+        if (!inputLine.isEmpty()) {
+            // Split the input line by commas to separate key-value pairs
+            String[] pairs = inputLine.split(",\\s*");
+            
+            // Iterate over the pairs and parse them
+            for (String pair : pairs) {
+                // Split the pair into key and value parts using the "->" delimiter
+                String[] keyValue = pair.split("->");
+                
+                // Trim and remove quotes from key
+                String key = keyValue[0].trim().replaceAll("\"", "");
+                
+                // Parse the value as an integer
+                int value = Integer.parseInt(keyValue[1].trim());
+                
+                // Add the key-value pair to the HashMap
+                hashMap.put(key, value);
+            }
+        }
+        
+        // Convert HashMap to TreeMap to sort the key-value pairs by key
+        TreeMap<String, Integer> treeMap = new TreeMap<>(hashMap);
+        
+        // Build the output string in the required format
+        StringBuilder output = new StringBuilder("{ ");
+        for (Map.Entry<String, Integer> entry : treeMap.entrySet()) {
+            output.append('"').append(entry.getKey()).append('"').append(" -> ").append(entry.getValue()).append(", ");
+        }
+        
+        // Remove the trailing comma and space
+        output.setLength(output.length() - 2);
+        
+        // Close the curly braces
+        output.append(" }");
+        
+        // Print the formatted output
+        System.out.println(output.toString());
+    }
+}
+
+=======================================SUBSET SUM PROBLEM=====================================
+
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the first line to get N and M
+        int N = scanner.nextInt(); // Number of integers in the set
+        int M = scanner.nextInt(); // Target sum
+        
+        // Read the second line to get the set of integers
+        int[] numbers = new int[N];
+        for (int i = 0; i < N; i++) {
+            numbers[i] = scanner.nextInt();
+        }
+        
+        // Close the scanner
+        scanner.close();
+        
+        // Create a boolean array dp to keep track of possible sums
+        boolean[] dp = new boolean[M + 1];
+        dp[0] = true; // We can always make a sum of 0 with an empty set
+        
+        // Process each number in the list
+        for (int num : numbers) {
+            // Update the dp array from the back to avoid overwriting values we haven't processed yet
+            for (int j = M; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
+            }
+        }
+        if (dp[M]) {
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
+    }
+}
+=========================================atb=================================
+</body>
+</html>
