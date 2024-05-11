@@ -210,57 +210,27 @@ import java.util.*;
 public class Solution {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        // Read the entire input line from stdin
-        String inputLine = scanner.nextLine().trim();
-        
-        // Close the scanner as it is no longer needed
+        Scanner scanner = new Scanner(System.in);        
+        String inputLine = scanner.nextLine().trim();        
         scanner.close();
-        
-        // Remove the surrounding curly braces and spaces from the input line
-        inputLine = inputLine.substring(1, inputLine.length() - 1).trim();
-        
-        // Initialize a HashMap to hold the parsed key-value pairs
-        Map<String, Integer> hashMap = new HashMap<>();
-        
-        // Parse the input line to fill the HashMap
+        inputLine = inputLine.substring(1, inputLine.length() - 1).trim();        
+        Map<String, Integer> hashMap = new HashMap<>();        
         if (!inputLine.isEmpty()) {
-            // Split the input line by commas to separate key-value pairs
-            String[] pairs = inputLine.split(",\\s*");
-            
-            // Iterate over the pairs and parse them
+            String[] pairs = inputLine.split(",\\s*");            
             for (String pair : pairs) {
-                // Split the pair into key and value parts using the "->" delimiter
                 String[] keyValue = pair.split("->");
-                
-                // Trim and remove quotes from key
                 String key = keyValue[0].trim().replaceAll("\"", "");
-                
-                // Parse the value as an integer
                 int value = Integer.parseInt(keyValue[1].trim());
-                
-                // Add the key-value pair to the HashMap
                 hashMap.put(key, value);
             }
         }
-        
-        // Convert HashMap to TreeMap to sort the key-value pairs by key
         TreeMap<String, Integer> treeMap = new TreeMap<>(hashMap);
-        
-        // Build the output string in the required format
         StringBuilder output = new StringBuilder("{ ");
         for (Map.Entry<String, Integer> entry : treeMap.entrySet()) {
             output.append('"').append(entry.getKey()).append('"').append(" -> ").append(entry.getValue()).append(", ");
         }
-        
-        // Remove the trailing comma and space
         output.setLength(output.length() - 2);
-        
-        // Close the curly braces
         output.append(" }");
-        
-        // Print the formatted output
         System.out.println(output.toString());
     }
 }
@@ -272,25 +242,15 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
-        // Read the first line to get N and M
-        int N = scanner.nextInt(); // Number of integers in the set
-        int M = scanner.nextInt(); // Target sum
-        
-        // Read the second line to get the set of integers
+        int N = scanner.nextInt(); 
+        int M = scanner.nextInt(); 
         int[] numbers = new int[N];
         for (int i = 0; i < N; i++) {
             numbers[i] = scanner.nextInt();
         }
-        
-        // Close the scanner
         scanner.close();
-        
-        // Create a boolean array dp to keep track of possible sums
         boolean[] dp = new boolean[M + 1];
         dp[0] = true; // We can always make a sum of 0 with an empty set
-        
-        // Process each number in the list
         for (int num : numbers) {
             // Update the dp array from the back to avoid overwriting values we haven't processed yet
             for (int j = M; j >= num; j--) {
